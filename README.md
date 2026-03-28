@@ -67,6 +67,54 @@ graph LR
         Payload -->|Raw Data| MassStorage
         MassStorage -->|Processed Info| OBC
     end
+
+### C. Sistem Bağlantı Mimarisi (Interconnect Architecture)
+Aşağıdaki şema, alt sistemler arasındaki düşük seviyeli (pin-level) donanım arayüzlerini ve veri akış yönlerini göstermektedir:
+
+```mermaid
+graph TD
+    subgraph "Unit 2: OBC & Comms"
+        OBC["OBC (ARM Cortex-M7)"]
+        UHF["UHF/VHF Transceiver"]
+        SBAND["S-Band Transmitter"]
+    end
+
+    subgraph "Unit 1: EPS & ADCS"
+        EPS["EPS Board (MPPT)"]
+        BATT["Battery Pack"]
+        ADCS["ADCS Controller"]
+        RW["Reaction Wheels (3x)"]
+        MTQ["Magnetorquers (3x)"]
+    end
+
+    subgraph "Unit 3: Payload"
+        PL["Optical Payload"]
+        MS["Mass Storage (NAND)"]
+        GNSS["GNSS Receiver"]
+    end
+
+    %% Bus Connections
+    OBC <-->|CAN-Bus / I2C| EPS
+    OBC <-->|CAN-Bus| ADCS
+    OBC <-->|UART / SPI| UHF
+    OBC <-->|SPI / UART| SBAND
+    
+    %% Internal Connections
+    EPS <-->|SMBus| BATT
+    ADCS -->|PWM / I2C| RW
+    ADCS -->|GPIO| MTQ
+    
+    %% Data Flux
+    PL -->|SpaceWire| MS
+    MS <-->|SPI / CAN| OBC
+    GNSS -->|UART / PPS| OBC
+    GNSS -->|UART / PPS| ADCS
+
+    %% Power distribution (simplified)
+    EPS ---|Reg 3.3V/5V| OBC
+    EPS ---|Reg 5V| ADCS
+    EPS ---|Unreg 12V| SBAND
+```
 ```
 
 ---
