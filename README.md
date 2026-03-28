@@ -28,20 +28,69 @@
 
 ---
 
-## 3. 🛠️ Detaylı Çözüm (Detailed Solution)
+## 🏗️ 3. Donanım Mimarisi ve Mekanik Yerleşim (Hardware Architecture)
+TerraSense mimarisinin kalbi, modüler ve yedekli donanım katmanlarından oluşur.
 
-### A. Donanım ve Mekanik Yerleşim (Hardware Layout)
-Uydu, kütle merkezi ve termal stabilite için üç fonksiyonel modüle (Unit) ayrılmıştır:
+### A. Sistem Mimari Şeması (Master Architecture)
+Aşağıdaki yüksek çözünürlüklü görsel, TerraSense'in donanım katmanlarını ve teknik arayüzlerini şematize etmektedir:
 
-![Internal Electronics Stack](assets/electronics_stack.png)
+![Hardware Architecture](assets/hardware_architecture.png)
 
-1.  **Unit 1 (Güç ve Kontrol):** EPS, Batarya Blokları ve ADCS Reaksiyon Tekerlekleri.
-2.  **Unit 2 (Beyin ve İletişim):** OBC, Transceiver kartları ve Kitle Bellek.
-3.  **Unit 3 (Görev Yükü):** Optik Kamera, Multispektral Sensörler ve GNSS Anteni.
+### B. Master Hidrolik & Elektronik Blok Diyagramı (Full Block Diagram)
+Tüm sensör, eyleyici ve işlemcilerin fiziksel bağlantı haritası:
+
+```mermaid
+graph TD
+    subgraph "Unit 3: Payload & Optics"
+        PL["Optical Sensor (RGB/NIR)"]
+        MS["Mass Storage (NAND Flash)"]
+        EDGE["Edge AI NPU Module"]
+    end
+
+    subgraph "Unit 2: Brain & Radio"
+        OBC["OBC (ARM Cortex-M7)"]
+        GPS["GNSS Receiver"]
+        UHF["UHF/VHF Transceiver"]
+        SBAND["S-Band High-Speed TX"]
+    end
+
+    subgraph "Unit 1: EPS & ADCS"
+        EPS["EPS Board (MPPT)"]
+        BATT["Li-Ion Battery Pack"]
+        ADCS["ADCS MCU"]
+        RW["Reaction Wheels (3-Axis)"]
+        MTQ["Magnetorquers (3-Axis)"]
+        IMU["IMU / Gyro / Mag"]
+    end
+
+    %% Internal Data Flow
+    PL -->|SpaceWire| MS
+    MS <-->|SpaceWire| EDGE
+    EDGE -->|Processed Data| OBC
+    GPS -->|UART / PPS| OBC
+    GPS -->|UART / PPS| ADCS
+    
+    %% Control Bus
+    OBC <-->|CAN-Bus| EPS
+    OBC <-->|CAN-Bus| ADCS
+    OBC <-->|UART / SPI| UHF
+    OBC <-->|SPI / LVDS| SBAND
+
+    %% Power distribution
+    EPS <-->|SMBus| BATT
+    EPS ---|3.3V / 5V| OBC
+    EPS ---|5V / 12V| PL
+    EPS ---|12V Peak| SBAND
+    
+    %% ADCS Control
+    ADCS -->|I2C / PWM| RW
+    ADCS -->|GPIO| MTQ
+    IMU -->|I2C| ADCS
+```
 
 ---
 
-## 4. ⚡ Elektronik Mimari ve Donanım Protokolleri
+## 4. ⚡ Detaylı Elektronik Protokoller
 
 ### A. Güç Dağıtım Mimarisi (Power Distribution)
 TerraSense, çift seviyeli regüle edilmiş bir güç hattı kullanır:
@@ -55,67 +104,13 @@ graph TD
     MPPT --> Unreg[12V Unreg - Comms Amp]
 ```
 
-### B. Veri Yolu ve Protokol Hiyerarşisi
-```mermaid
-graph LR
-    subgraph "Control Layer (CAN Bus)"
-        OBC <--> EPS
-        OBC <--> ADCS
-        OBC <--> Comms
-    end
-    subgraph "Data Layer (SpaceWire)"
-        Payload -->|Raw Data| MassStorage
-        MassStorage -->|Processed Info| OBC
-    end
-```
-
-### C. Sistem Bağlantı Mimarisi (Interconnect Architecture)
-Aşağıdaki şema, alt sistemler arasındaki düşük seviyeli (pin-level) donanım arayüzlerini ve veri akış yönlerini göstermektedir:
-
-```mermaid
-graph TD
-    subgraph "Unit 2: OBC & Comms"
-        OBC["OBC (ARM Cortex-M7)"]
-        UHF["UHF/VHF Transceiver"]
-        SBAND["S-Band Transmitter"]
-    end
-
-    subgraph "Unit 1: EPS & ADCS"
-        EPS["EPS Board (MPPT)"]
-        BATT["Battery Pack"]
-        ADCS["ADCS Controller"]
-        RW["Reaction Wheels (3x)"]
-        MTQ["Magnetorquers (3x)"]
-    end
-
-    subgraph "Unit 3: Payload"
-        PL["Optical Payload"]
-        MS["Mass Storage (NAND)"]
-        GNSS["GNSS Receiver"]
-    end
-
-    %% Bus Connections
-    OBC <-->|CAN-Bus / I2C| EPS
-    OBC <-->|CAN-Bus| ADCS
-    OBC <-->|UART / SPI| UHF
-    OBC <-->|SPI / UART| SBAND
-    
-    %% Internal Connections
-    EPS <-->|SMBus| BATT
-    ADCS -->|PWM / I2C| RW
-    ADCS -->|GPIO| MTQ
-    
-    %% Data Flux
-    PL -->|SpaceWire| MS
-    MS <-->|SPI / CAN| OBC
-    GNSS -->|UART / PPS| OBC
-    GNSS -->|UART / PPS| ADCS
-
-    %% Power distribution (simplified)
-    EPS ---|Reg 3.3V/5V| OBC
-    EPS ---|Reg 5V| ADCS
-    EPS ---|Unreg 12V| SBAND
-```
+### B. Donanım Arayüz Protokolleri (Interconnect)
+| Protokol | Kullanım Alanı | Hız / Kritiklik |
+| :--- | :--- | :--- |
+| **SpaceWire** | Payload -> Storage | 200 Mbps |
+| **CAN-Bus** | OBC <-> EPS <-> ADCS | 1 Mbps (Kritik Kontrol) |
+| **SPI** | OBC -> SD Card / UHF | 20 MHz (Veri Aktarımı) |
+| **I2C** | Sensors (IMU/Termal) | 400 kHz (Sistem Sağlığı) |
 
 ---
 
