@@ -132,10 +132,27 @@ Uydunun yazılım mimarisi, yüksek modülerlik için **NASA Core Flight System 
 
 ---
 
-## ⚠️ 6. Güvenilirlik ve Risk Yönetimi (FMEA)
+## ⚠️ 6. Güvenilirlik ve Risk Yönetimi (FMEA & Heatmap)
 - **OBC SEU Koruması:** ECC RAM ve Watchdog Timer.
 - **ADCS Redundancy:** Manyetik Tork Çubukları ile yedekli yönelim kontrolü.
 - **Yazılım Safe Mode:** Düşük enerji durumunda sadece temel haberleşme hattını açık tutan güvenli mod.
+
+### Görev Risk Isı Haritası (Risk Heatmap)
+Kritik risklerin olasılık ve etki bazlı 5x5 matris üzerindeki dağılımı:
+
+| Olasılık \ Etki | Önemsiz | Düşük | Orta | Yüksek | Kritik |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Çok Yüksek** | | | | | |
+| **Yüksek** | | | [Termal] | | [Launch] |
+| **Orta** | | [Sensor] | | [SEU] | |
+| **Düşük** | | | [De-orbit] | | |
+| **Çok Düşük** | | | | | |
+
+*   **[Launch]:** Fırlatma anı yükleri (Kritik/Yüksek).
+*   **[SEU]:** İşlemci hatası (Yüksek/Orta).
+*   **[Termal]:** Isıl dengesizlik (Orta/Yüksek).
+
+---
 
 ---
 
@@ -189,11 +206,19 @@ Uzay ortamının ekstrem sıcaklık farklarına (-50°C ile +80°C) karşı uygu
 
 ---
 
-## 🚀 12. Gelecek Vizyonu: Feza-X Takımyıldızı
+## 🚀 12. Gelecek Vizyonu: Feza-X Takımyıldızı ve Optik Bağ (Laser Comms)
 Feza-X-A (Prototip) başarısının ardından hedeflenen yol haritası:
 - **Feza-X-B:** Gelişmiş L Bandı radar (SAR) sensörü entegrasyonu.
-- **Feza-X-C:** Lazer haberleşme (Optical Comms) ile 1Gbps+ veri hızı.
+- **Feza-X-C (Deep Space):** Lazer haberleşme (Optical Comms) ile 1Gbps+ veri hızı.
 - **Takımyıldız:** Toplam 12 uydu ile Türkiye üzerinden "Real-time" (15 dk altı) izleme kabiliyeti.
+
+### Optik Haberleşme (Feza-X-C Insight)
+RF darboğazını aşmak için kullanılacak hibrit sistem:
+- **Dalga Boyu:** 1550 nm (Near-IR).
+- **Avantaj:** Dar hüzme genişliği sayesinde saptanma riskinin düşmesi ve devasa bant genişliği.
+- **Zorluk:** 500km mesafede <1μrad hassasiyetle yüksek hassasiyetli işaretleme (Pointing).
+
+---
 
 ---
 
@@ -205,16 +230,15 @@ Feza-X, Türkiye'nin **10 Yıllık Milli Uzay Programı** hedefleriyle tam uyuml
 
 ---
 
-## 🛠️ 14. Somut Çıktılar ve Yazılım Araçları (Aon-Class Strategic Ecosystem)
+## 🛠️ 14. Somut Çıktılar ve Yazılım Araçları (Aethel-Class Grand Ecosystem)
 Proje, mimari dökümantasyonun ötesinde çalıştırılabilir altyapılar sunar:
-- **[Link Budget Hesaplayıcı](communication-arch/link_budget_calculator.py):** S-Band ve UHF hatları için matematiksel doğrulama aracı.
-- **[ADCS Kontrol Simülatörü](docs/adcs_simulation.py):** Nadir yönelimi için PID kontrol algoritması simülasyonu.
+- **[Simüle Telemetri Verisi (CSV)](communication-arch/telemetry_history_sim.csv):** Veri analizi ve dashboard testleri için 1000+ satırlık örnek veri seti.
+- **[Link Budget Hesaplayıcı](communication-arch/link_budget_calculator.py):** RF hatları için matematiksel doğrulama aracı.
+- **[ADCS Kontrol Simülatörü](docs/adcs_simulation.py):** PID kontrol algoritması simülasyonu.
 - **[Görev Sekansı (JSON)](communication-arch/mission_conops_sequence.json):** Makine tarafından okunabilir görev akışı.
 - **[Yer İstasyonu API (Python)](docs/ground_station_api.py):** FastAPI tabanlı GS backend iskeleti.
 - **[Telemetri Sözlüğü](communication-arch/telemetry_dictionary.json):** Sistem haberleşme protokolü.
-- **[Yörünge Hesaplayıcı](docs/pass_calculator.py):** Python tabanlı yer istasyonu planlama aracı.
 - **[MCC Docker Ortamı](Dockerfile):** Görev kontrol merkezini tek komutla kuran altyapı (IaC).
-- **[Gereksinim Matrisi (RTM)](docs/requirement_traceability.md):** Mühendislik isterlerinin tam izlenebilirliği.
 
 ---
 
@@ -325,8 +349,8 @@ Reposu içindeki dosyaların görev ve hiyerarşi rehberi:
 
 ```text
 📁 Feza-X-CubeSat-Architecture
-├── 📁 assets/               # Görsel varlıklar, banner ve MCC mockup
-├── 📁 communication-arch/    # Telemetri, Görev Sekansı ve Link Budget
+├── 📁 assets/               # Görsel varlıklar, banner, exploded view ve mockup
+├── 📁 communication-arch/    # Telemetri, Görev Sekansı, Link Budget ve Örnek Veri
 ├── 📁 docs/                 # Teknik derinlik, GS API, ADCS Sim, FMEA, RTM
 ├── 📁 hardware-layout/      # 3U yerleşim planları ve alt sistem spekleri
 ├── 📄 Dockerfile            # Görev kontrol merkezi IaC dökümanı
