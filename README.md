@@ -219,6 +219,72 @@ Proje, mimari dökümantasyonun ötesinde çalıştırılabilir altyapılar suna
 
 ---
 
+## 🔬 17. Alt Sistem Teknik Spesifikasyonları (Deep-Dive)
+Aşağıdaki tablolar, TerraSense'in kritik bileşenlerinin mühendislik parametrelerini detaylandırır:
+
+### Faydalı Yük (Payload) - Optik Sensör
+| Parametre | Değer | Detay |
+| :--- | :--- | :--- |
+| **GSD (Ground Sample Distance)** | 5.0m @ 500km | Multispektral (R, G, B, NIR) |
+| **Swath Width** | 24 km | Tek geçişte kapsama alanı |
+| **SNR (Signal-to-Noise Ratio)** | >110 dB | Düşük ışık koşullarında yüksek verim |
+| **Data Rate (Raw)** | 480 Mbps | Kamera - Bellek arası SpaceWire hattı |
+
+### Haberleşme (Transceiver) - UHF & S-Band
+| Parametre | UHF (TT&C) | S-Band (Mission Data) |
+| :--- | :--- | :--- |
+| **Frekans** | 437.5 MHz | 2405 MHz |
+| **Modülasyon** | GFSK / 9k6 baud | QPSK / 2Mbps |
+| **Protokol** | AX.25 / CSP | CCSDS Frame Structure |
+| **TX Power** | 30 dBm (1W) | 33 dBm (2W) |
+
+---
+
+## 📝 18. Haberleşme Katmanı ve Yazılım Protokolleri
+TerraSense, alt sistemler arası ve yer-uydu haberleşmesi için **CubeSat Space Protocol (CSP)** kullanır:
+
+### CSP Paket Yapısı (Header)
+```text
+[ Priority (2b) | Source (5b) | Destination (5b) | Destination Port (6b) | Flags (8b) ]
+Total: 32-bit Header
+```
+- **Port 7:** Telemetry Service (PDU format).
+- **Port 10:** Command Service (Encrypted HMAC).
+- **Port 31:** File Transfer (FP) Service for images.
+
+---
+
+## 🛠️ 19. Yer Destek Ekipmanları ve AIT Altyapısı (GSE)
+Uydunun montaj ve test süreçleri için gereken profesyonel laboratuvar mimarisi:
+
+### Elektriksel Yer Destek Ekipmanı (EGSE)
+- **Solar Simulator:** Solar panellerin yörünge aydınlanmasını simüle eden AM0 ışık kaynağı.
+- **Battery Cycler:** Batarya şarj/deşarj karakteristiği analizi.
+- **Hardware-in-the-Loop (HiL):** OBC ve sensörlerin simülasyon ortamında testi.
+
+### Mekanik Yer Destek Ekipmanı (MGSE)
+- **ISO 7 Cleanroom:** Partikül arındırılmış montaj alanı.
+- **Vibration Jig:** 3-eksenli titreşim tablası adaptörleri.
+- **Thermal Vacuum Chamber (TVAC):** -60°C / +90°C vakum ortamı.
+
+---
+
+## 📂 20. Proje Dizini ve Dosya Mimarisi
+Reposu içindeki dosyaların görev ve hiyerarşi rehberi:
+
+```text
+📁 TerraSense-CubeSat-Architecture
+├── 📁 assets/               # Görsel varlıklar, banner ve MCC mockup
+├── 📁 communication-arch/    # Telemetri sözlüğü ve Link Budget dökümanları
+├── 📁 docs/                 # Teknik derinlik, FMEA, AIT ve RTM dosyaları
+├── 📁 hardware-layout/      # 3U yerleşim planları ve alt sistem spekleri
+├── 📄 Dockerfile            # Görev kontrol merkezi IaC dökümanı
+├── 📄 README.md             # Master dökümantasyon (Ana doküman)
+└── 📄 LICENSE               # MIT Lisansı
+```
+
+---
+
 ## 🔗 Bağlantılar & Demos
 *   📽️ **Tanıtım Videosu:** [Drive Linki]
 *   📊 **Proje Sunumu:** [Drive Linki]
