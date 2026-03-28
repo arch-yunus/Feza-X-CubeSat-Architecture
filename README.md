@@ -110,11 +110,20 @@ Uydunun yazılım mimarisi, yüksek modülerlik için **NASA Core Flight System 
 
 ---
 
-## 🛠️ 9. Somut Çıktılar ve Yazılım Araçları
-Proje, sadece mimari bir döküman değil, aynı zamanda operasyonel araçlar da sunar:
-- **[Telemetri Sözlüğü](communication-arch/telemetry_dictionary.json):** Makine tarafından okunabilir, bayt-seviyesinde sistem tanımları.
-- **[Yörünge Hesaplayıcı](docs/pass_calculator.py):** Yer istasyonu geçişlerini tahmin eden Python tabanlı araç.
-- **[Görev Kontrol Paneli Mockup](assets/mission_dashboard.html):** Yer segmenti operasyonları için görsel ve interaktif arayüz tasarımı.
+## 🇹🇷 10. Milli Uzay Vizyonu ve Stratejik Uyum
+TerraSense, Türkiye'nin **10 Yıllık Milli Uzay Programı** hedefleriyle tam uyumlu olarak tasarlanmıştır:
+- **Yerlileştirme:** Kritik bileşenlerde ASELSAN, TÜBİTAK UZAY ve ASPİLSAN çözümlerine öncelik veren [Milli Yol Haritası](docs/national_roadmap.md) benimsenmiştir.
+- **Teknolojik Bağımsızlık:** Görüntü işleme ve uçuş yazılımı katmanlarında açık kaynaklı ancak milli modifikasyonlara açık mimariler (NASA-cFS tabanlı) kullanılmıştır.
+- **Sürdürülebilirlik:** Uzay çöpünü minimize eden pasif de-orbit stratejileri ile küresel standartlara uyum sağlanmıştır.
+
+---
+
+## 🛠️ 11. Somut Çıktılar ve Yazılım Araçları
+Proje, mimari dökümantasyonun ötesinde çalıştırılabilir altyapılar sunar:
+- **[Telemetri Sözlüğü](communication-arch/telemetry_dictionary.json):** Sistem haberleşme protokolü.
+- **[Yörünge Hesaplayıcı](docs/pass_calculator.py):** Python tabanlı yer istasyonu planlama aracı.
+- **[MCC Docker Ortamı](Dockerfile):** Görev kontrol merkezini tek komutla kuran altyapı (IaC).
+- **[Gereksinim Matrisi (RTM)](docs/requirement_traceability.md):** Mühendislik isterlerinin tam izlenebilirliği.
 
 ---
 
