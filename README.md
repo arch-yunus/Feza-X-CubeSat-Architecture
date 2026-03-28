@@ -205,10 +205,12 @@ Feza-X, Türkiye'nin **10 Yıllık Milli Uzay Programı** hedefleriyle tam uyuml
 
 ---
 
-## 🛠️ 14. Somut Çıktılar ve Yazılım Araçları (Titan-Class Ecosystem)
+## 🛠️ 14. Somut Çıktılar ve Yazılım Araçları (Aon-Class Strategic Ecosystem)
 Proje, mimari dökümantasyonun ötesinde çalıştırılabilir altyapılar sunar:
-- **[Görev Sekansı (JSON)](communication-arch/mission_conops_sequence.json):** Uydunun bir yörünge boyunca yapacağı tüm işlemleri içeren makine tarafından okunabilir görev akışı.
-- **[Yer İstasyonu API (Python)](docs/ground_station_api.py):** Telemetri alımı ve güvenli komut gönderimi için FastAPI tabanlı sunucu iskeleti.
+- **[Link Budget Hesaplayıcı](communication-arch/link_budget_calculator.py):** S-Band ve UHF hatları için matematiksel doğrulama aracı.
+- **[ADCS Kontrol Simülatörü](docs/adcs_simulation.py):** Nadir yönelimi için PID kontrol algoritması simülasyonu.
+- **[Görev Sekansı (JSON)](communication-arch/mission_conops_sequence.json):** Makine tarafından okunabilir görev akışı.
+- **[Yer İstasyonu API (Python)](docs/ground_station_api.py):** FastAPI tabanlı GS backend iskeleti.
 - **[Telemetri Sözlüğü](communication-arch/telemetry_dictionary.json):** Sistem haberleşme protokolü.
 - **[Yörünge Hesaplayıcı](docs/pass_calculator.py):** Python tabanlı yer istasyonu planlama aracı.
 - **[MCC Docker Ortamı](Dockerfile):** Görev kontrol merkezini tek komutla kuran altyapı (IaC).
@@ -216,8 +218,34 @@ Proje, mimari dökümantasyonun ötesinde çalıştırılabilir altyapılar suna
 
 ---
 
-## 🛡️ 15. Siber Güvenlik ve Komuta Şifrelemesi
-Feza-X, komuta zinciri güvenliği için çok katmanlı bir koruma mimarisi kullanır:
+## 🌡️ 15. Detaylı Isıl Analiz ve Bütçe (Thermal Budget)
+Feza-X'in bileşen bazlı operasyonel sıcaklık limitleri ve beklenen ısıl değerleri:
+
+| Bileşen | Çalışma Aralığı (°C) | Beklenen (Güneş) | Beklenen (Gölge) | Koruma Stratejisi |
+| :--- | :--- | :--- | :--- | :--- |
+| **OBC / Brain** | -40 / +85 | +35 | -10 | Pasif (Şasi Bağlantısı) |
+| **BATT / Batarya** | 0 / +45 | +25 | +5 | **Aktif Isıtıcı (Heater)** |
+| **EPS / Power** | -40 / +85 | +45 | -15 | Pasif (Yüksek Emisivite) |
+| **PAYLOAD / Optik** | -10 / +50 | +20 | 0 | MLI İzolasyon / Heaters |
+| **RF Transceiver** | -40 / +85 | +55 | -20 | Termal Arayüz Malzemesi |
+
+---
+
+## 🛡️ 16. Siber Güvenlik ve STRIDE Tehdit Modeli
+Feza-X'in güvenlik mimarisi, Microsoft STRIDE metodolojisi ile analiz edilmiştir:
+
+| Tehdit Katmanı | Tehdit Tipi | Risk / Etki | Önleyici Tedbir |
+| :--- | :--- | :--- | :--- |
+| **Spoofing** | Yer İstasyonu Taklidi | Komuta Yetkisi Kaybı | **HMAC-SHA256 İmzası** |
+| **Tampering** | Paket Manipülasyonu | Uydunun Yanlış Davranışı | **CRC-32 + Signature** |
+| **Repudiation** | İtiraz Edilebilirlik | Log Sahteciliği | Read-only ECC Telemetry Log |
+| **Information** | Veri Sızıntısı | Görüntülerin Çalınması | **AES-256-GCM Şifreleme** |
+| **DoS** | Sinyal Karıştırma | İletişim Kopması | Spread Spectrum / FHSS |
+| **Elevation** | Yetki Yükseltme | Kritik Mod Değişimi | PW Korumalı Safe Mode |
+
+---
+
+## 🛡️ 17. Komuta Şifrelemesi ve PDU Akışı
 - **Uplink Authentication:** Yer istasyonundan gönderilen her komut, **HMAC-SHA256** algoritması ile imzalanır. Uydu, geçerli bir imza taşımayan komutları reddeder.
 - **Replay Attack Protection:** Her komut paketinde "Anti-replay Counter" ve "Timestamp" bulunur. Eskimiş veya tekrar eden paketler işlenmez.
 - **Downlink Encryption:** Bilimsel veriler ve görüntüler, S-Band üzerinden iletilmeden önce **AES-256-GCM** ile şifrelenir.
@@ -233,7 +261,7 @@ Uydunun fiziksel entegrasyonu için belirlenen standartlar:
 
 ---
 
-## 🌀 17. Çevresel Test Matrisi (Verification)
+## 🌀 19. Çevresel Test Matrisi (Verification)
 Feza-X'in uzay kalifikasyonu için geçmesi gereken test seviyeleri:
 - **Vibration (Sine/Random):** 20Hz - 2000Hz aralığında, RMS: 14.1 G.
 - **Shock:** 1000 G @ 0.5ms (Ayrılma anı simülasyonu).
@@ -242,7 +270,7 @@ Feza-X'in uzay kalifikasyonu için geçmesi gereken test seviyeleri:
 
 ---
 
-## 🔬 18. Alt Sistem Teknik Spesifikasyonları (Deep-Dive)
+## 🔬 20. Alt Sistem Teknik Spesifikasyonları (Deep-Dive)
 Aşağıdaki tablolar, Feza-X'in kritik bileşenlerinin mühendislik parametrelerini detaylandırır:
 
 ### Faydalı Yük (Payload) - Optik Sensör
@@ -292,17 +320,18 @@ Uydunun montaj ve test süreçleri için gereken profesyonel laboratuvar mimaris
 
 ---
 
-## 📂 21. Proje Dizini ve Dosya Mimarisi
+## 📂 24. Proje Dizini ve Dosya Mimarisi
 Reposu içindeki dosyaların görev ve hiyerarşi rehberi:
 
 ```text
 📁 Feza-X-CubeSat-Architecture
 ├── 📁 assets/               # Görsel varlıklar, banner ve MCC mockup
 ├── 📁 communication-arch/    # Telemetri, Görev Sekansı ve Link Budget
-├── 📁 docs/                 # Teknik derinlik, GS API, FMEA, AIT ve RTM
+├── 📁 docs/                 # Teknik derinlik, GS API, ADCS Sim, FMEA, RTM
 ├── 📁 hardware-layout/      # 3U yerleşim planları ve alt sistem spekleri
 ├── 📄 Dockerfile            # Görev kontrol merkezi IaC dökümanı
 ├── 📄 README.md             # Master dökümantasyon (Ana doküman)
+├── 📄 requirements.txt      # Yazılım bağımlılıkları rehberi
 └── 📄 LICENSE               # MIT Lisansı
 ```
 
