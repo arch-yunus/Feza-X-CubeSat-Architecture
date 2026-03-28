@@ -1,0 +1,13 @@
+# Git Ignore for CubeSat Project
+# IDEs
+.vscode/
+.idea/
+
+# CAD/3D Files
+*.bak
+*.tmp
+*.log
+
+# Workspace
+.gemini/
+/tmp/
