@@ -30,6 +30,13 @@ Feza-X, küresel açık kaynaklı küp uydu ekosisteminde "Havacılık Sınıfı
 2.  **Mekanik Kararlılık:** Açılır panellerin (deployables) neden olduğu mekanik risk ve atmosferik sürüklenmeyi, gövde entegre panellerle ekarte ettik.
 3.  **Endüstriyel Olgunluk:** Hobi odaklı projelere kıyasla Feza-X, ICD, FDIR ve STRIDE gibi profesyonel mühendislik dökümanlarıyla "görev hazır" (mission-ready) seviyededir.
 
+### 0.1. 📍 Mimari Felsefesi ve Evrimsel Süreç (Evolution)
+Feza-X, tasarım felsefesi olarak **NASA'nın Dellingr** ve **BioSentinel** gibi 3U/6U profesyonel referans mimarilerini temel alır. Ancak Feza-X, bu jenerik altyapıları şu kritik alanlarda "evrimleştirmiştir":
+
+*   **Veri Taşıyıcıdan "Düşünen" Uyduya:** Mevcut NASA-cFS altyapısı, NPU (Neural Processing Unit) donanımıyla hibrit çalışacak ve **"Bulut Eleme/ROI"** yapacak şekilde özelleştirilmiştir. Bu, sistemi pasif bir veri borusu olmaktan çıkarıp aktif bir karar mekanizmasına dönüştürmüştür.
+*   **Mekanik Hassasiyet & GSD Hedefi:** 5 metre altı çözünürlük hedefi için açılır panellerin (deployables) neden olduğu mikroskobik titreşimler (jitter) elenmiştir. **Body-Mounted** (Gövde Entegre) seçimi, uydunun optik kararlılığını maksimize eden bilinçli bir mühendislik tercihidir.
+*   **Aethel-Class Olgunluğu:** Feza-X sadece bir kod deposu değil; ICD, FDIR ve TRM (Requirement Traceability) dökümanlarıyla akademik bir kitten profesyonel bir uzay aracına dönüşümün temsilcisidir.
+
 ---
 
 ## 1. 📋 Gerekli Girdiler (Required Inputs)
