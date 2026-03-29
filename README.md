@@ -30,12 +30,16 @@ Feza-X, küresel açık kaynaklı küp uydu ekosisteminde "Havacılık Sınıfı
 2.  **Mekanik Kararlılık:** Açılır panellerin (deployables) neden olduğu mekanik risk ve atmosferik sürüklenmeyi, gövde entegre panellerle ekarte ettik.
 3.  **Endüstriyel Olgunluk:** Hobi odaklı projelere kıyasla Feza-X, ICD, FDIR ve STRIDE gibi profesyonel mühendislik dökümanlarıyla "görev hazır" (mission-ready) seviyededir.
 
-### 0.1. 📍 Mimari Felsefesi ve Evrimsel Süreç (Evolution)
-Feza-X, tasarım felsefesi olarak **NASA'nın Dellingr** ve **BioSentinel** gibi 3U/6U profesyonel referans mimarilerini temel alır. Ancak Feza-X, bu jenerik altyapıları şu kritik alanlarda "evrimleştirmiştir":
+### 0.1. 📍 Mimari Felsefesi ve Evrimsel Süreç (Evolution & Benchmarks)
+Feza-X, küresel ölçekte rüştünü ispatlamış iki ana ekosistemin "altın standartlarını" bir araya getirerek geliştirilmiştir:
 
-*   **Veri Taşıyıcıdan "Düşünen" Uyduya:** Mevcut NASA-cFS altyapısı, NPU (Neural Processing Unit) donanımıyla hibrit çalışacak ve **"Bulut Eleme/ROI"** yapacak şekilde özelleştirilmiştir. Bu, sistemi pasif bir veri borusu olmaktan çıkarıp aktif bir karar mekanizmasına dönüştürmüştür.
-*   **Mekanik Hassasiyet & GSD Hedefi:** 5 metre altı çözünürlük hedefi için açılır panellerin (deployables) neden olduğu mikroskobik titreşimler (jitter) elenmiştir. **Body-Mounted** (Gövde Entegre) seçimi, uydunun optik kararlılığını maksimize eden bilinçli bir mühendislik tercihidir.
-*   **Aethel-Class Olgunluğu:** Feza-X sadece bir kod deposu değil; ICD, FDIR ve TRM (Requirement Traceability) dökümanlarıyla akademik bir kitten profesyonel bir uzay aracına dönüşümün temsilcisidir.
+*   **Yazılım İlhamı (NASA Dellingr):** Feza-X'in "kalbi" olan **NASA-cFS (Core Flight System)** mimarisi, Dellingr (6U) gibi kritik derin uzay görevlerinde kullanılan profesyonel uçuş yazılımı felsefesini temel alır. Bu, sistemimizi hobi odaklı (Arduino/Python) yapılardan ayırıp "Havacılık Sınıfı" bir olgunluğa taşır.
+*   **Donanım Referansı (EnduroSat 3U):** Form faktörü ve modülerlik açısından piyasadaki en kararlı ticari platformlardan biri olan **EnduroSat 3U** mimarisiyle paralellik gösterir. PC104 bus yapısı ve fiziksel istifleme mantığı, bu endüstri standartlarına sadık kalınarak optimize edilmiştir.
+
+### Neden Bu Mimariyi Geliştirdik?
+Feza-X, bu jenerik referansları şu kritik alanlarda evrimleştirmiştir:
+*   **Veri Taşıyıcısından "Düşünen" Uyduya:** Mevcut NASA-cFS altyapısı, NPU donanımıyla hibrit çalışacak ve **"Bulut Eleme/ROI"** yapacak şekilde özelleştirilmiştir.
+*   **Mekanik Hassasiyet & GSD Hedefi:** 5 metre çözünürlük hedefi için açılır panellerin (deployables) neden olduğu mikroskobik titreşimler (jitter) elenmiş, **Body-Mounted** seçimiyle optik kararlılık maksimize edilmiştir.
 
 ---
 
