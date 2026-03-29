@@ -255,6 +255,10 @@ Proje, mimari dökümantasyonun ötesinde çalıştırılabilir altyapılar suna
 - **[Link Budget Hesaplayıcı](communication-arch/link_budget_calculator.py):** RF hatları için matematiksel doğrulama aracı.
 - **[ADCS Kontrol Simülatörü](docs/adcs_simulation.py):** PID kontrol algoritması simülasyonu.
 - **[Görev Sekansı (JSON)](communication-arch/mission_conops_sequence.json):** Makine tarafından okunabilir görev akışı.
+- **[FDIR Stratejisi (Markdown)](docs/fdir_strategy.md):** Otonom hata tespit ve kurtarma mantığı.
+- **[CSP Paket Üretici (Python)](communication-arch/csp_packet_generator.py):** İletişim protokolü simülasyon aracı.
+- **[Termal Denge Modeli (Python)](docs/thermal_equilibrium_model.py):** LEO sıcaklık analiz betiği.
+- **[Master ICD (Markdown)](docs/master_icd.md):** Donanım ve yazılım arayüz kontrol dökümanı.
 - **[Yer İstasyonu API (Python)](docs/ground_station_api.py):** FastAPI tabanlı GS backend iskeleti.
 - **[Telemetri Sözlüğü](communication-arch/telemetry_dictionary.json):** Sistem haberleşme protokolü.
 - **[MCC Docker Ortamı](Dockerfile):** Görev kontrol merkezini tek komutla kuran altyapı (IaC).
@@ -363,7 +367,15 @@ Uydunun montaj ve test süreçleri için gereken profesyonel laboratuvar mimaris
 
 ---
 
-## 📂 24. Proje Dizini ve Dosya Mimarisi
+## 🌡️ 24. İleri Mühendislik ve Simülasyon Araçları
+Feza-X, sadece bir tasarım değil, havacılık standartlarında (Aethel-Class) simülasyon altyapısı sunar:
+- **Termal Analiz:** `thermal_equilibrium_model.py` ile farklı kaplama malzemelerinin (Alüminyum, Siyah Eloksal, Beyaz Boya) yörünge sıcaklık etkilerini görün.
+- **Protokol Testi:** `csp_packet_generator.py` ile yer-uydu haberleşme paketlerini (Hex) oluşturun ve doğrulayın.
+- **Güvenilirlik:** `fdir_strategy.md` ile sistem hatalarına karşı geliştirilen otonom kurtarma ağacını inceleyin.
+
+---
+
+## 📂 25. Proje Dizini ve Dosya Mimarisi
 Reposu içindeki dosyaların görev ve hiyerarşi rehberi:
 
 ```text
